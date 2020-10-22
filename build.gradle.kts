@@ -1,4 +1,5 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import java.math.BigDecimal.valueOf
 
 buildscript {
     repositories {
@@ -166,6 +167,59 @@ subprojects {
                 }
             }
         }
+    }
+}
+
+val jacocoAggregateMerge by tasks.creating(JacocoMerge::class) {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    executionData(
+        project(":core:common").buildDir.absolutePath + "/jacoco/test.exec",
+        project(":core:client").buildDir.absolutePath + "/jacoco/test.exec",
+        project(":core:server").buildDir.absolutePath + "/jacoco/test.exec"
+    )
+    dependsOn(
+        ":core:common:test",
+        ":core:client:test",
+        ":core:server:test"
+    )
+}
+
+@Suppress("UnstableApiUsage")
+val jacocoAggregateReport by tasks.creating(JacocoReport::class) {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    executionData(jacocoAggregateMerge.destinationFile)
+    reports {
+        xml.isEnabled = true
+    }
+    additionalClassDirs(files(subprojects.flatMap { project ->
+        listOf("java", "kotlin").map { project.buildDir.path + "/classes/$it/main" }
+    }))
+    additionalSourceDirs(files(subprojects.flatMap { project ->
+        listOf("java", "kotlin").map { project.file("src/main/$it").absolutePath }
+    }))
+    dependsOn(jacocoAggregateMerge)
+}
+
+tasks {
+    jacocoTestCoverageVerification {
+        executionData.setFrom(jacocoAggregateMerge.destinationFile)
+        violationRules {
+            rule {
+                limit {
+                    minimum = valueOf(0.9)
+                }
+            }
+        }
+        additionalClassDirs(files(subprojects.flatMap { project ->
+            listOf("java", "kotlin").map { project.buildDir.path + "/classes/$it/main" }
+        }))
+        additionalSourceDirs(files(subprojects.flatMap { project ->
+            listOf("java", "kotlin").map { project.file("src/main/$it").absolutePath }
+        }))
+        dependsOn(jacocoAggregateReport)
+    }
+    check {
+        finalizedBy(jacocoTestCoverageVerification)
     }
 }
 

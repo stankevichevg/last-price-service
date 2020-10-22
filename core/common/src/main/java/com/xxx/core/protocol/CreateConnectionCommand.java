@@ -1,15 +1,15 @@
 package com.xxx.core.protocol;
 
 
+import static com.xxx.core.protocol.Configuration.MAX_CHANNEL_LENGTH;
 import static com.xxx.core.protocol.SystemMessageTypes.CREATE_CONNECTION_MESSAGE_TYPE;
 import static org.agrona.BitUtil.SIZE_OF_INT;
 
 public class CreateConnectionCommand extends Message {
 
-    private static final int MAX_BUFFER_SIZE = 128;
-
     public static final int CLIENT_STREAM_ID_FIELD_OFFSET = MESSAGE_HEADER_LENGTH;
     public static final int CLIENT_CHANNEL_FIELD_OFFSET = CLIENT_STREAM_ID_FIELD_OFFSET + SIZE_OF_INT;
+    public static final int MESSAGE_SIZE = CLIENT_CHANNEL_FIELD_OFFSET + MAX_CHANNEL_LENGTH;
 
     public int clientStreamId() {
         return readBuffer.getInt(offset + CLIENT_STREAM_ID_FIELD_OFFSET);
@@ -29,7 +29,7 @@ public class CreateConnectionCommand extends Message {
 
     @Override
     public int sizeInBytes() {
-        return MAX_BUFFER_SIZE;
+        return MESSAGE_SIZE;
     }
 
     @Override

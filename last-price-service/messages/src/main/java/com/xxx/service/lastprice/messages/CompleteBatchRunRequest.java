@@ -25,7 +25,7 @@ public class CompleteBatchRunRequest extends Message {
     }
 
     @Override
-    protected int uniqueType() {
+    public int uniqueType() {
         return COMPLETE_BATCH_REQUEST_MESSAGE_TYPE;
     }
 }

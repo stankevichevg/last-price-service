@@ -206,7 +206,7 @@ tasks {
         violationRules {
             rule {
                 limit {
-                    minimum = valueOf(0.9)
+                    minimum = valueOf(0.4)
                 }
             }
         }

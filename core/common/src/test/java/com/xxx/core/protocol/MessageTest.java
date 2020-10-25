@@ -35,7 +35,7 @@ public class MessageTest {
     private static final class TestMessage extends Message {
 
         @Override
-        protected int uniqueType() {
+        public int uniqueType() {
             return -1;
         }
 

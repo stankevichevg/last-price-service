@@ -33,7 +33,7 @@ public class CreateConnectionCommand extends Message {
     }
 
     @Override
-    protected int uniqueType() {
+    public int uniqueType() {
         return CREATE_CONNECTION_MESSAGE_TYPE;
     }
 }

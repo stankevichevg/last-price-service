@@ -45,7 +45,7 @@ public class FixSizeObjectPool<T extends PoolInstance> implements ObjectPool<T> 
     public void freeInstance(T instance) {
         final int instanceId = instance.getId();
         checkIdBounds(instanceId);
-
+        freeInstances.addInt(instanceId);
     }
 
     private void checkIdBounds(final int id) {

@@ -33,7 +33,7 @@ public class StartBatchRunResponse extends Message {
     }
 
     @Override
-    protected int uniqueType() {
+    public int uniqueType() {
         return START_BATCH_RESPONSE_MESSAGE_TYPE;
     }
 

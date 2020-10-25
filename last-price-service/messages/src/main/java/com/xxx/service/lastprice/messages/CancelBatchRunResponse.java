@@ -28,7 +28,7 @@ public class CancelBatchRunResponse extends Message {
     }
 
     @Override
-    protected int uniqueType() {
+    public int uniqueType() {
         return CANCEL_BATCH_RESPONSE_MESSAGE_TYPE;
     }
 }

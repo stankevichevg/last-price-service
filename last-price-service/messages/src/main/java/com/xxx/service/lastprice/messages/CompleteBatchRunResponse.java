@@ -29,7 +29,7 @@ public class CompleteBatchRunResponse extends Message {
     }
 
     @Override
-    protected int uniqueType() {
+    public int uniqueType() {
         return COMPLETE_BATCH_RESPONSE_MESSAGE_TYPE;
     }
 }

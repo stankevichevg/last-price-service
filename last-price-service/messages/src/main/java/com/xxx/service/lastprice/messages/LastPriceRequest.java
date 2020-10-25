@@ -51,7 +51,7 @@ public class LastPriceRequest extends Message {
     }
 
     @Override
-    protected int uniqueType() {
+    public int uniqueType() {
         return LAST_PRICE_REQUEST_MESSAGE_TYPE;
     }
 }

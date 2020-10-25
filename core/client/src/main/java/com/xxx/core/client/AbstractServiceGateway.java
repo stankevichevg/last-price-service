@@ -16,6 +16,7 @@ import org.agrona.concurrent.UnsafeBuffer;
 import org.agrona.concurrent.ringbuffer.OneToOneRingBuffer;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.function.Supplier;
@@ -34,7 +35,7 @@ import static org.agrona.concurrent.ringbuffer.RingBufferDescriptor.TRAILER_LENG
  *
  * @author Evgeny Stankevich {@literal <stankevich.evg@gmail.com>}.
  */
-public abstract class AbstractServiceGateway<C extends AbstractServiceClient> implements AutoCloseable {
+public abstract class AbstractServiceGateway<C extends BaseServiceClient> implements AutoCloseable {
 
     private static final IdleStrategy WAIT_PUB_SUB_IDLE_STRATEGY = new SleepingMillisIdleStrategy(10);
 
@@ -84,7 +85,7 @@ public abstract class AbstractServiceGateway<C extends AbstractServiceClient> im
             nanoClock,
             this,
             WAIT_PUB_SUB_IDLE_STRATEGY,
-            10000000000L,
+            TimeUnit.SECONDS.toNanos(1),
             new OneToOneRingBuffer(new UnsafeBuffer(
                 allocateDirectAligned(1024 + TRAILER_LENGTH, CACHE_LINE_LENGTH)
             ))
@@ -180,7 +181,7 @@ public abstract class AbstractServiceGateway<C extends AbstractServiceClient> im
     }
 
     @SuppressWarnings("unchecked")
-    void closeClient(AbstractServiceClient serviceClient) {
+    void closeClient(BaseServiceClient serviceClient) {
         lock.lock();
         try {
             clients.freeInstance((C) serviceClient);
@@ -241,7 +242,7 @@ public abstract class AbstractServiceGateway<C extends AbstractServiceClient> im
         private void onFragment(final DirectBuffer buffer, final int offset, final int length, final Header header) {
             final int messageType = buffer.getInt(offset + Message.TYPE_FIELD_OFFSET);
             final int clientId = buffer.getInt(offset + Message.CLIENT_ID_FIELD_OFFSET);
-            final AbstractServiceClient client = clientId == CONNECTION_CONTROL_CLIENT_ID ?
+            final BaseServiceClient client = clientId == CONNECTION_CONTROL_CLIENT_ID ?
                 serverConnectionClient : clients.getInstance(clientId);
             client.receiveMessage(messageType, buffer, offset, length);
         }

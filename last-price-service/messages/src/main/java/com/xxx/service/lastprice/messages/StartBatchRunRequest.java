@@ -16,7 +16,7 @@ public class StartBatchRunRequest extends Message {
     }
 
     @Override
-    protected int uniqueType() {
+    public int uniqueType() {
         return START_BATCH_REQUEST_MESSAGE_TYPE;
     }
 }

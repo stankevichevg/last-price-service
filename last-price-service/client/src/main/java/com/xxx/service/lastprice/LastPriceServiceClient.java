@@ -1,6 +1,6 @@
 package com.xxx.service.lastprice;
 
-import com.xxx.core.client.AbstractServiceClient;
+import com.xxx.core.client.BaseServiceClient;
 import com.xxx.core.client.AbstractServiceGateway;
 import com.xxx.core.client.ConnectionTimeoutException;
 import com.xxx.service.lastprice.messages.CancelBatchRunRequest;
@@ -27,7 +27,7 @@ import static org.agrona.BufferUtil.allocateDirectAligned;
 /**
  * {@inheritDoc}
  */
-public class LastPriceServiceClient extends AbstractServiceClient {
+public class LastPriceServiceClient extends BaseServiceClient {
 
     private final LastPriceRequest lastPriceRequest = new LastPriceRequest();
     private final StartBatchRunRequest startBatchRequest = new StartBatchRunRequest();

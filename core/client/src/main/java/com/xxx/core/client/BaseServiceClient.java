@@ -18,7 +18,7 @@ import static org.agrona.BufferUtil.allocateDirectAligned;
  *
  * @author Evgeny Stankevich {@literal <stankevich.evg@gmail.com>}.
  */
-public class AbstractServiceClient implements PoolInstance, AutoCloseable {
+public class BaseServiceClient implements PoolInstance, AutoCloseable {
 
     protected final int clientId;
     private final NanoClock nanoClock;
@@ -28,7 +28,7 @@ public class AbstractServiceClient implements PoolInstance, AutoCloseable {
 
     private final RingBuffer inboundMessagesBuffer;
 
-    public AbstractServiceClient(
+    public BaseServiceClient(
         int clientId,
         NanoClock nanoClock,
         AbstractServiceGateway serviceGateway,
@@ -90,7 +90,7 @@ public class AbstractServiceClient implements PoolInstance, AutoCloseable {
      * @param length message length
      */
     void receiveMessage(int messageType, DirectBuffer buffer, int offset, int length) {
-        final boolean written = inboundMessagesBuffer.write(messageType, buffer, offset, length);
+        inboundMessagesBuffer.write(messageType, buffer, offset, length);
     }
 
     private long startOperation(Message request) {

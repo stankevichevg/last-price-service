@@ -48,7 +48,7 @@ public class UploadChunkRequest extends Message {
     }
 
     @Override
-    protected int uniqueType() {
+    public int uniqueType() {
         return UPLOAD_CHUNK_REQUEST_MESSAGE_TYPE;
     }
 }

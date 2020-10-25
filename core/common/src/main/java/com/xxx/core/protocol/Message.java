@@ -56,6 +56,6 @@ public abstract class Message extends Flyweight {
         writeBuffer.putLong(offset + CORRELATION_ID_FIELD_OFFSET, correlationId);
     }
 
-    protected abstract int uniqueType();
+    public abstract int uniqueType();
 
 }

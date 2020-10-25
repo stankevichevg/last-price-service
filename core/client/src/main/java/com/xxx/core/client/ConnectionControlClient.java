@@ -13,7 +13,7 @@ import org.agrona.concurrent.ringbuffer.RingBuffer;
  *
  * @author Evgeny Stankevich {@literal <stankevich.evg@gmail.com>}.
  */
-public class ConnectionControlClient extends AbstractServiceClient {
+public class ConnectionControlClient extends BaseServiceClient {
 
     protected static final int CONNECTION_CONTROL_CLIENT_ID = -1;
 

@@ -13,7 +13,7 @@ public class ConnectionAckResponse extends Message {
     }
 
     @Override
-    protected int uniqueType() {
+    public int uniqueType() {
         return CONNECTION_ACK_MESSAGE_TYPE;
     }
 

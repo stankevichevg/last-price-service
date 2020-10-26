@@ -13,7 +13,7 @@ import java.util.function.LongSupplier;
 public interface ServiceHandler {
 
     /**
-     * Handles incoming service request, do business logic and responds to the client through provided publication.
+     * Handles incoming service request, do business logic and responds to the client.
      *
      * @param messageType message type
      * @param idGenerator generates long IDs

@@ -102,6 +102,12 @@ public class LastPriceServiceHandler implements ServiceHandler {
         }
     }
 
+    protected void reset() {
+        marketState.reset();
+        operationalBatchRun.reset();
+        batchRunRepository.removeAll();
+    }
+
     private LastPriceResponse onLastPrice(LastPriceRequest lastPriceRequest) {
         final CharSequence instrument = lastPriceRequest.instrument();
         final int instrumentIndex = instrumentIndexer.defineIndex(instrument);
@@ -124,7 +130,7 @@ public class LastPriceServiceHandler implements ServiceHandler {
         return lastPriceResponse;
     }
 
-    public StartBatchRunResponse onStartBatchRun(StartBatchRunRequest request, LongSupplier idGenerator) {
+    private StartBatchRunResponse onStartBatchRun(StartBatchRunRequest request, LongSupplier idGenerator) {
         if (batchRunRepository.size() == MAX_ACTIVE_BATCHES_NUMBER) {
             startBatchRunResponse.status(CAN_NOT_CREATE_BATCH_STATUS);
         } else {

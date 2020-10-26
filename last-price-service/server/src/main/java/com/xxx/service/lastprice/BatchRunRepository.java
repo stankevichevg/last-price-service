@@ -68,4 +68,9 @@ public interface BatchRunRepository {
      */
     int removeOutdated(long evictionTime, int limit, Consumer<BatchRun> consumer);
 
+    /**
+     * Removes all repository records.
+     */
+    void removeAll();
+
 }

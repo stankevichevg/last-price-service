@@ -17,9 +17,8 @@ import static org.agrona.BitUtil.CACHE_LINE_LENGTH;
 import static org.agrona.BufferUtil.allocateDirectAligned;
 
 /**
+ * Implementation of batch run repository.
  *
- *
- * TODO think about better class name =)
  * @author Evgeny Stankevich {@literal <stankevich.evg@gmail.com>}.
  */
 public class BatchRunRepositoryImpl implements BatchRunRepository {
@@ -45,7 +44,7 @@ public class BatchRunRepositoryImpl implements BatchRunRepository {
     @Override
     public BatchRun create(long id) {
         if (freeIndexes.size() == 0) {
-            throw new IndexOutOfBoundsException("New batch run can not be created, max number of them is reached");
+            throw new IllegalStateException("New batch run can not be created, max number of them is reached");
         }
         final int index = freeIndexes.pollInt();
         final BatchRun batchRun = batchRunsPool.get(index);
@@ -100,6 +99,13 @@ public class BatchRunRepositoryImpl implements BatchRunRepository {
             consumer.accept(oldestBatchRun);
         }
         return removedCounter;
+    }
+
+    @Override
+    public void removeAll() {
+        while (!cleanUpQueue.isEmpty()) {
+            remove(cleanUpQueue.poll());
+        }
     }
 
     private MutableDirectBuffer allocateBatchRunsBuffer(int instrumentsNumber) {

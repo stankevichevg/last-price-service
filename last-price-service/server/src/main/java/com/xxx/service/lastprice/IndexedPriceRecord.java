@@ -61,11 +61,7 @@ public class IndexedPriceRecord extends Flyweight {
 
     void putPayload(DirectBuffer readFrom, int readOffset, int payloadSize) {
         payloadSize(payloadSize);
-        try {
-            writeBuffer.putBytes(offset + PAYLOAD_FIELD_OFFSET, readFrom, readOffset, payloadSize);
-        } catch (Throwable e) {
-            System.out.println(e);
-        }
+        writeBuffer.putBytes(offset + PAYLOAD_FIELD_OFFSET, readFrom, readOffset, payloadSize);
     }
 
     @Override

@@ -18,7 +18,7 @@ import static org.agrona.BitUtil.SIZE_OF_LONG;
 public class BatchRun extends BaseIndexedPriceRecordsBlock {
 
     public static final int ID_FIELD_OFFSET = 0;
-    public static final int LAST_UPDATE_TIMESTAMP_FIELD_OFFSET = ID_FIELD_OFFSET + SIZE_OF_INT;
+    public static final int LAST_UPDATE_TIMESTAMP_FIELD_OFFSET = ID_FIELD_OFFSET + SIZE_OF_LONG;
     public static final int BATCH_RUN_HEADER_SIZE = LAST_UPDATE_TIMESTAMP_FIELD_OFFSET + SIZE_OF_LONG;
 
     private final int index;

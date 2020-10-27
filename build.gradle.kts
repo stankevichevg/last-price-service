@@ -176,12 +176,16 @@ val jacocoAggregateMerge by tasks.creating(JacocoMerge::class) {
         project(":core:common").buildDir.absolutePath + "/jacoco/test.exec",
         project(":core:client").buildDir.absolutePath + "/jacoco/test.exec",
         project(":core:server").buildDir.absolutePath + "/jacoco/test.exec",
+        project(":last-price-service:client").buildDir.absolutePath + "/jacoco/test.exec",
+        project(":last-price-service:messages").buildDir.absolutePath + "/jacoco/test.exec",
         project(":last-price-service:server").buildDir.absolutePath + "/jacoco/test.exec"
     )
     dependsOn(
         ":core:common:test",
         ":core:client:test",
         ":core:server:test",
+        ":last-price-service:client:test",
+        ":last-price-service:messages:test",
         ":last-price-service:server:test"
     )
 }
@@ -208,7 +212,7 @@ tasks {
         violationRules {
             rule {
                 limit {
-                    minimum = valueOf(0.6)
+                    minimum = valueOf(0.7)
                 }
             }
         }

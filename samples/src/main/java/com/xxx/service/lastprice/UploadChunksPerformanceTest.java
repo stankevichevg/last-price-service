@@ -64,7 +64,6 @@ public class UploadChunksPerformanceTest {
         Flyweight.allocateMemoryForFlyweight(priceRecordsChunk, PriceRecordsChunk.defineSize(1000));
 
         final NanoClock nanoClock = SystemNanoClock.INSTANCE;
-        final EpochClock epochClock = SystemEpochClock.INSTANCE;
         final Supplier<IdleStrategy> busySpinIdleStrategyFactory = () -> BusySpinIdleStrategy.INSTANCE;
         try (Aeron aeron = Aeron.connect();
              final LastPriceServiceGateway priceServiceGateway = new LastPriceServiceGateway(

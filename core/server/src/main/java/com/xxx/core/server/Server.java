@@ -28,21 +28,20 @@ public class Server implements AutoCloseable {
     private static final int FRAGMENT_LIMIT = 10;
     private static final IdleStrategy WAIT_PUB_SUB_IDLE_STRATEGY = new SleepingMillisIdleStrategy(10);
 
-    private final EpochClock epochClock;
-    private final Aeron aeron;
-    private final String serverChannel;
-    private final int serverStreamId;
-    private final IdleStrategy serverIdleStrategy;
-
-    private final AtomicBoolean running = new AtomicBoolean(true);
-
-    private final ServiceHandler serviceHandler;
-
-    private final FragmentAssembler assembler = new FragmentAssembler(this::onMessage);
-    private final Long2ObjectHashMap<ConnectionPublication> connections = new Long2ObjectHashMap<>();
-
     private final CreateConnectionCommand createConnectionCommand = new CreateConnectionCommand();
     private final ConnectionAckResponse connectionAckResponse = new ConnectionAckResponse();
+
+    private final Aeron aeron;
+    private final EpochClock epochClock;
+    private final IdleStrategy serverIdleStrategy;
+
+    private final String serverChannel;
+    private final int serverStreamId;
+
+    private final Long2ObjectHashMap<ConnectionPublication> connections = new Long2ObjectHashMap<>();
+    private final FragmentAssembler assembler = new FragmentAssembler(this::onMessage);
+    private final AtomicBoolean running = new AtomicBoolean(true);
+    private final ServiceHandler serviceHandler;
 
     public Server(EpochClock epochClock, Aeron aeron, String serverChannel, int serverStreamId,
                   IdleStrategy serverIdleStrategy, ServiceHandler serviceHandler) {

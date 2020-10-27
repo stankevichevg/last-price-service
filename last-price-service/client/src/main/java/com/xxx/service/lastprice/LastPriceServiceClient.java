@@ -54,6 +54,13 @@ public class LastPriceServiceClient extends BaseServiceClient {
         wrapResponseBufferForRead();
     }
 
+    /**
+     * Requests last price for the given instrument.
+     *
+     * @param instrument instrument to receive price for
+     * @return last price record
+     * @throws ConnectionTimeoutException if response was not received in time
+     */
     public PriceRecord requestLastPrice(CharSequence instrument) throws ConnectionTimeoutException {
         lastPriceRequest.instrument(instrument);
         makeCall(lastPriceRequest);
@@ -67,14 +74,22 @@ public class LastPriceServiceClient extends BaseServiceClient {
     /**
      * Send command to start a batch run.
      *
-     * @return
-     * @throws ConnectionTimeoutException
+     * @return started batch id
+     * @throws ConnectionTimeoutException if response was not received in time
      */
     public long startBatchRun() throws ConnectionTimeoutException {
         makeCall(startBatchRequest);
         return batchStartedResponse.batchId();
     }
 
+    /**
+     * Uploads given price records chunk to the service.
+     *
+     * @param batchRunId batch run id to upload the chunk to
+     * @param priceRecordsChunk chunk to upload
+     * @return {@code true} if chunk was uploaded, else {@code false}
+     * @throws ConnectionTimeoutException if response was not received in time
+     */
     public boolean uploadChunk(long batchRunId, PriceRecordsChunk priceRecordsChunk) throws ConnectionTimeoutException {
         uploadChunkRequest.batchId(batchRunId);
         uploadChunkRequest.putChunk(priceRecordsChunk);
@@ -82,14 +97,29 @@ public class LastPriceServiceClient extends BaseServiceClient {
         return uploadChunkResponse.status() == UploadChunkResponse.SUCCESS_STATUS;
     }
 
-    public boolean cancelBatchRun(long batchRun) throws ConnectionTimeoutException {
-        cancelBatchRunRequest.batchId(batchRun);
+    /**
+     * Cancels butch with the given id.
+     *
+     * @param batchRunId batch run id to cancel
+     * @return {@code true} if batch was canceled, else {@code false}
+     * @throws ConnectionTimeoutException if response was not received in time
+     */
+    public boolean cancelBatchRun(long batchRunId) throws ConnectionTimeoutException {
+        cancelBatchRunRequest.batchId(batchRunId);
         makeCall(cancelBatchRunRequest);
         return cancelBatchRunResponse.status() == CancelBatchRunResponse.SUCCESS_STATUS;
     }
 
-    public boolean completeBatchRun(long batchRun) throws ConnectionTimeoutException {
-        completeBatchRunRequest.batchId(batchRun);
+    /**
+     * Completes batch run with the given id.
+     * After this operation was applied price changes in batch should be visible for all consequent read requests.
+     *
+     * @param batchRunId batch run id to complete
+     * @return {@code true} if batch was completed, else {@code false}
+     * @throws ConnectionTimeoutException if response was not received in time
+     */
+    public boolean completeBatchRun(long batchRunId) throws ConnectionTimeoutException {
+        completeBatchRunRequest.batchId(batchRunId);
         makeCall(completeBatchRunRequest);
         return completeBatchRunResponse.status() == CompleteBatchRunResponse.SUCCESS_STATUS;
     }

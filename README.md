@@ -75,6 +75,18 @@ If batch is completed it is merging to the similar structure `MarketState`. All 
 Process of chunk uploading uses additional operational batch run structure (com.xxx.service.lastprice.LastPriceServiceHandler.operationalBatchRun) to ensure all chunk records will be writen or none of them.
 When operational batch run is filled it is merged to the right batch run.
 
+## How to run
+
+Examples of client/service communications are presented in `samples` module as performance tests.
+Tests assume clients and server will be run on the same machine.
+
+To run a perfomance test three steps are needed to complete:
+1. Run external Aeron Media Driver on the host. Package has low latency media driver runner implementation `LowLatencyMediaDriver`
+2. Start the service running `LastPriceServiceRunner`
+3. Start one of the performance test you need to check results for
+
+If service and clients are on different hosts, then each host should run own media driver process.
+
 ## Performance tests
 
 Several scenarious were implemented to test system perfomance in terms of request/responce latency.
